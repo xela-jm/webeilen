@@ -8,6 +8,12 @@ const AsyncHomePage = Loadable({
     loading: () => <ContentLoader />
 });
 
+const AsyncSignUp = Loadable({
+    loader: () => import('../routes/session/sign-up'),
+    loading: () => <ContentLoader />
+});
+
 export {
-    AsyncHomePage
+    AsyncHomePage,
+    AsyncSignUp
 }
