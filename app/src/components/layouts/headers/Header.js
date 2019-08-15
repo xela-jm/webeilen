@@ -16,8 +16,14 @@ import {
     MDBNavLink
 } from 'mdbreact';
 import Cart from "./SignUp";
+import connect from "react-redux/es/connect/connect";
+import {showAlertAction} from "../../../actions/action";
 
 class Header extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     state = {
         isOpen: false,
@@ -26,7 +32,11 @@ class Header extends React.Component {
 
     toggleCollapse = () => {
         this.setState({isOpen: !this.state.isOpen});
-    }
+    };
+
+    showModal = () => {
+        this.props.showAlertAction("e", "d");
+    };
 
     render() {
         return (
@@ -71,7 +81,7 @@ class Header extends React.Component {
                                     </MDBNavLink>
                                 </MDBNavItem>
                                 <MDBNavItem>
-                                    <MDBNavLink to="/register">Register</MDBNavLink>
+                                    <MDBNavLink onClick={this.showModal} to="">Sign Up</MDBNavLink>
                                 </MDBNavItem>
                                 <MDBNavItem>
                                     <MDBNavLink to="#!">Sign In</MDBNavLink>
@@ -99,4 +109,11 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+
+
+const mapStateToProps = ({ appSettings }) => {
+    return { };
+};
+export default connect(mapStateToProps, {
+    showAlertAction: showAlertAction
+})(Header);

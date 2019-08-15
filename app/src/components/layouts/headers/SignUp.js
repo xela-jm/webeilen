@@ -1,40 +1,26 @@
 import React, {Component} from "react";
 import IconButton from "@material-ui/core/IconButton/IconButton";
-import Popover from "@material-ui/core/Popover/Popover";
 import {MDBBtn, MDBContainer, MDBModal} from "mdbreact";
+import connect from "react-redux/es/connect/connect";
+import {hideAlertAction, showAlertAction, toggleAlertAction} from "../../../actions/action";
+
 
 class SignUp extends Component {
     constructor(props) {
         super(props);
-        this.confirmationDialog = React.createRef();
-        this.state = {
-            anchorEl: null,
-        };
     }
 
-    //Define function for open dropdown
-    handleClick = event => {
-        this.setState({
-            anchorEl: event.currentTarget,
-        });
+    handleClose = () => {
+        this.props.hideAlertAction("d", "d");
     };
 
-    //Define function for close dropdown
-    handleClose = () => {
-        this.setState({
-            anchorEl: null,
-        });
+    toggle = () => {
+        this.props.toggleAlertAction("d", "d");
     };
 
     render() {
-
-        const {anchorEl} = this.state;
-        const open = Boolean(anchorEl);
-        const {cart} = this.props;
-
         return (
             <div className="iron-cart-wrap">
-                !!!!!!!!!!!!!!!!!!!
                 <IconButton
                     color="inherit"
                     aria-haspopup="true"
@@ -47,14 +33,13 @@ class SignUp extends Component {
 
 
                 <MDBContainer>
-                    {/* BUTTON */}
-                    <MDBBtn color="info" onClick={this.handleClick}>Click</MDBBtn>
                     {/* MODAL */}
-                    <MDBModal isOpen={open} size="lg" full-height position="top">
+                    <MDBModal isOpen={this.props.showAlert} toggle={this.toggle} size="lg" full-height position="top">
                         <div className="card">
                             <header className="card-header test1">
                                 <h5 className="modal-title">Register</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleClose}>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close"
+                                        onClick={this.handleClose}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </header>
@@ -108,4 +93,14 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+
+const mapStateToProps = ({appSettings}) => {
+    const {showAlert} = appSettings;
+    return {showAlert};
+};
+
+export default connect(mapStateToProps, {
+    hideAlertAction: hideAlertAction,
+    showAlertAction: showAlertAction,
+    toggleAlertAction: toggleAlertAction
+})(SignUp);

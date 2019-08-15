@@ -1,5 +1,6 @@
 import {combineReducers} from "redux";
+import appSettings from "./appSettings";
 
-const reducers = combineReducers({});
+const reducers = combineReducers({appSettings});
 
 export default reducers;
