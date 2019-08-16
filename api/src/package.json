@@ -1,0 +1,16 @@
+{
+  "name": "TShopAPI",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TShop API",
+  "scripts": {
+    "start": "SET NODE_ENV=production & pm2 start server.js",
+    "dev": "SET NODE_ENV=development & set PORT=3006 & nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
