@@ -23,6 +23,78 @@ exports.register = async (req, res) => {
     }
 }
 
+exports.login = async (req, res) => {
+    try {
+        const data = matchedData(req)
+        const user = await findUser(data.email)
+        //await userIsBlocked(user)
+        const isPasswordMatch = await auth.checkPassword(data.password, user)
+        if (!isPasswordMatch) {
+            utils.handleError(res, await passwordsDoNotMatch(user))
+        } else {
+            user.loginAttempts = 0
+            res.status(200).json(await saveUserAccessAndReturnToken(req, user))
+        }
+    } catch (error) {
+        utils.handleError(res, error)
+    }
+}
+
+exports.register = async (req, res) => {
+    try {
+        // Gets locale from header 'Accept-Language'
+        const locale = req.getLocale()
+        req = matchedData(req)
+        const doesEmailExists = await emailer.emailExists(req.email)
+        if (!doesEmailExists) {
+            const item = await registerUser(req)
+            const userInfo = setUserInfo(item)
+            const response = returnRegisterToken(item, userInfo)
+            emailer.sendRegistrationEmailMessage(locale, item)
+            res.status(201).json(response)
+        }
+    } catch (error) {
+        utils.handleError(res, error)
+    }
+}
+
+
+
+const saveUserAccessAndReturnToken = async (req, user) => {
+    return new Promise((resolve, reject) => {
+            const userInfo = setUserInfo(user)
+            resolve({
+                token: generateToken(user.id),
+                user: userInfo
+            })
+    })
+}
+
+const userIsBlocked = async user => {
+    return new Promise((resolve, reject) => {
+        if (user.blockExpires > new Date()) {
+            reject(utils.buildErrObject(409, 'BLOCKED_USER'))
+        }
+        resolve(true)
+    })
+}
+
+const findUser = async email => {
+    return new Promise((resolve, reject) => {
+        User.findOne( {
+            where : {
+                'email': email
+            }
+        }).then(user => {
+            utils.itemNotFound(null, user, reject, 'USER_DOES_NOT_EXIST')
+            resolve(user)
+        }).catch(err => {
+            utils.itemNotFound(err, null, reject, 'USER_DOES_NOT_EXIST')
+        })
+    })
+}
+
+
 const registerUser = async req => {
     return new Promise((resolve, reject) => {
         const user = new User({
@@ -34,7 +106,7 @@ const registerUser = async req => {
             password: req.password
         })
 
-        user.save().then((item) => {
+        user.preSave().save().then((item) => {
                 resolve(item)
             }
         ).catch(err => reject(utils.buildErrObject(422, err.message)))

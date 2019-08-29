@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 const i18n = require('i18n')
+const cors = require("cors");
 
+app.use(cors());
 app.set('port', process.env.PORT || 3000);
 
 i18n.configure({

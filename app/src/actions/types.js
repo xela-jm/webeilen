@@ -1,3 +1,9 @@
 export const SHOW_ALERT = 'SHOW_ALERT';
 export const HIDE_ALERT = 'HIDE_ALERT';
 export const TOGGLE_ALERT = 'TOGGLE_ALERT';
+export const REGISTER_USER = 'REGISTER_USER';
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const LOG_OUT = 'LOG_OUT';
+export const SHOW_LOGIN = 'SHOW_LOGIN';
+export const HIDE_LOGIN = 'HIDE_LOGIN';
+export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';

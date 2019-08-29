@@ -17,7 +17,14 @@ import {
 } from 'mdbreact';
 import Cart from "./SignUp";
 import connect from "react-redux/es/connect/connect";
-import {showAlertAction} from "../../../actions/action";
+import {
+    fetchData,
+    hideAlertAction,
+    logOut,
+    showAlertAction,
+    showLogin,
+    toggleAlertAction
+} from "../../../actions/action";
 
 class Header extends React.Component {
 
@@ -37,6 +44,10 @@ class Header extends React.Component {
     showModal = () => {
         this.props.showAlertAction("e", "d");
     };
+
+    showLogin = () => {
+        this.props.showLogin();
+    }
 
     render() {
         return (
@@ -80,15 +91,18 @@ class Header extends React.Component {
                                         <MDBBadge color="danger" className="ml-2">4</MDBBadge>
                                     </MDBNavLink>
                                 </MDBNavItem>
-                                <MDBNavItem>
+                                <MDBNavItem hidden={this.props.userDetails != null}>
                                     <MDBNavLink onClick={this.showModal} to="">Sign Up</MDBNavLink>
                                 </MDBNavItem>
-                                <MDBNavItem>
-                                    <MDBNavLink to="#!">Sign In</MDBNavLink>
+                                <MDBNavItem hidden={this.props.userDetails != null}>
+                                    <MDBNavLink onClick={this.showLogin} to="#!">Sign In</MDBNavLink>
+                                </MDBNavItem>
+                                <MDBNavItem hidden={this.props.userDetails == null}>
+                                    <MDBNavLink onClick={this.props.logOut} to="#!">Log out</MDBNavLink>
                                 </MDBNavItem>
                                 <MDBNavItem>
                                     <MDBDropdown>
-                                        <MDBDropdownToggle nav caret>
+                                        <MDBDropdownToggle hidden={this.props.userDetails == null} nav caret>
                                             <MDBIcon icon="user"/>
                                         </MDBDropdownToggle>
                                         <MDBDropdownMenu className="dropdown-default">
@@ -109,11 +123,13 @@ class Header extends React.Component {
     }
 }
 
-
-
-const mapStateToProps = ({ appSettings }) => {
-    return { };
+const mapStateToProps = ({appSettings}) => {
+    const {userDetails} = appSettings;
+    return {userDetails};
 };
+
 export default connect(mapStateToProps, {
-    showAlertAction: showAlertAction
+    showAlertAction: showAlertAction,
+    showLogin: showLogin,
+    logOut: logOut,
 })(Header);
