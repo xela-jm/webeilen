@@ -1,10 +1,16 @@
 const express = require('express')
 const router = express.Router();
+const controller = require('../controllers/items')
 
 console.log("Test controller registered");
 
 router.get('/test', function (req, res) {
-    res.send('GET request to the homepage');
+    controller.getItems(req, res).then(result => {
+        res.send(result);
+    }).catch(e => {
+        res.send("Hello Wrodl");
+    });
+    //res.send('GET request to the homepage');
 });
 
 module.exports = router;
