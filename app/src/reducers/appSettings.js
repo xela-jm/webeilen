@@ -15,7 +15,13 @@ const INITIAL_STATE = {
     showAlert: false,
     showLoginAlert: false,
     user: {},
-    userDetails: sessionStorage.getItem("userDetails")
+    userDetails: sessionStorage.getItem("userDetails"),
+/*    itemsFilter: {},
+    itemsFiltered: {
+        total: 100,
+        offset: 24,
+        items: []
+    }*/
 };
 
 export default (state = INITIAL_STATE, action) => {
