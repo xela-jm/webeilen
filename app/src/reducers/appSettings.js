@@ -1,14 +1,15 @@
 import {
-    HIDE_ALERT, HIDE_LOGIN,
+    HIDE_ALERT,
+    HIDE_LOGIN,
     LOG_OUT,
     REGISTER_USER,
     SET_USER_DATA,
     SHOW_ALERT,
     SHOW_LOGIN,
-    TOGGLE_ALERT, TOGGLE_LOGIN
+    TOGGLE_ALERT,
+    TOGGLE_COLOR,
+    TOGGLE_LOGIN
 } from "../actions/types";
-
-
 
 
 const INITIAL_STATE = {
@@ -16,12 +17,18 @@ const INITIAL_STATE = {
     showLoginAlert: false,
     user: {},
     userDetails: sessionStorage.getItem("userDetails"),
-/*    itemsFilter: {},
+    itemsFilter: {
+        color: {
+            blue_opt: false,
+            red_opt: false,
+            yellow_opt: false
+        }
+    },
     itemsFiltered: {
         total: 100,
         offset: 24,
         items: []
-    }*/
+    }
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -36,14 +43,13 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, showAlert: !state.showAlert};
 
         case REGISTER_USER:
-            return { ...state, user: action.data }
+            return {...state, user: action.data}
 
         case SET_USER_DATA:
             sessionStorage.setItem("userDetails", action.data)
-            return { ...state, userDetails: action.data }
+            return {...state, userDetails: action.data}
 
         case SHOW_LOGIN:
-            debugger;
             return {...state, showLoginAlert: true};
 
         case HIDE_LOGIN:
@@ -52,11 +58,22 @@ export default (state = INITIAL_STATE, action) => {
         case TOGGLE_LOGIN:
             return {...state, showLoginAlert: !state.showLoginAlert};
 
+        case TOGGLE_COLOR:
+            return {
+                ...state,
+                itemsFilter: {
+                    ...state.itemsFilter,
+                    color:
+                        {
+                            ...state.itemsFilter.color,
+                            [action.payload.message]: !state.itemsFilter.color[action.payload.message]
+                        }
+                }
+            }
 
         case LOG_OUT:
-            debugger;
             sessionStorage.removeItem("userDetails")
-            return { ...state, userDetails: null }
+            return {...state, userDetails: null}
 
 
         default:

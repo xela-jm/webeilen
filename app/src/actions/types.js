@@ -7,3 +7,4 @@ export const LOG_OUT = 'LOG_OUT';
 export const SHOW_LOGIN = 'SHOW_LOGIN';
 export const HIDE_LOGIN = 'HIDE_LOGIN';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
+export const TOGGLE_COLOR = 'TOGGLE_COLOR';

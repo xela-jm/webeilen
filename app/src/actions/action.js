@@ -7,7 +7,7 @@ import {
     LOG_OUT,
     SHOW_LOGIN,
     HIDE_LOGIN,
-    TOGGLE_LOGIN
+    TOGGLE_LOGIN, TOGGLE_COLOR
 } from "./types";
 
 export const showAlertAction = (message, type) => ({
@@ -44,6 +44,13 @@ export const logOut = (message, type) => ({
     type: LOG_OUT,
     payload: {message, type}
 });
+
+export const toggleColor = (message, type) => {
+    return ({
+        type: TOGGLE_COLOR,
+        payload: {message, type}
+    });
+};
 
 /*export const fetchData = (message, type) => ({
     type: REGISTER_USER,
