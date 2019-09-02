@@ -66,7 +66,6 @@ class SignUp extends Component {
     };
 
     render() {
-        debugger;
         return (
             <div className="iron-cart-wrap">
                 <IconButton

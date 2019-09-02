@@ -8,3 +8,4 @@ export const SHOW_LOGIN = 'SHOW_LOGIN';
 export const HIDE_LOGIN = 'HIDE_LOGIN';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
 export const TOGGLE_COLOR = 'TOGGLE_COLOR';
+export const TOGGLE_SIZE = 'TOGGLE_SIZE';

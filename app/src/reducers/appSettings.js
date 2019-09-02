@@ -8,7 +8,8 @@ import {
     SHOW_LOGIN,
     TOGGLE_ALERT,
     TOGGLE_COLOR,
-    TOGGLE_LOGIN
+    TOGGLE_LOGIN,
+    TOGGLE_SIZE
 } from "../actions/types";
 
 
@@ -22,6 +23,12 @@ const INITIAL_STATE = {
             blue_opt: false,
             red_opt: false,
             yellow_opt: false
+        },
+        size: {
+            M: false,
+            L: false,
+            XL: false,
+            XXL: false
         }
     },
     itemsFiltered: {
@@ -67,6 +74,19 @@ export default (state = INITIAL_STATE, action) => {
                         {
                             ...state.itemsFilter.color,
                             [action.payload.message]: !state.itemsFilter.color[action.payload.message]
+                        }
+                }
+            }
+
+        case TOGGLE_SIZE:
+            return {
+                ...state,
+                itemsFilter: {
+                    ...state.itemsFilter,
+                    size:
+                        {
+                            ...state.itemsFilter.size,
+                            [action.payload.message]: !state.itemsFilter.size[action.payload.message]
                         }
                 }
             }
