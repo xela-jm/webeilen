@@ -7,8 +7,15 @@ import {
     LOG_OUT,
     SHOW_LOGIN,
     HIDE_LOGIN,
-    TOGGLE_LOGIN, TOGGLE_COLOR, TOGGLE_SIZE
+    TOGGLE_LOGIN,
+    TOGGLE_COLOR,
+    TOGGLE_SIZE,
+    PAGINATE,
+    UPDATE_ITEMS_COLLECTION,
+    UPDATE_ITEMS_FILTER,
+    UPDATE_ITEMS_FILTERED
 } from "./types";
+//import {applyMiddleware as dispatch} from "redux";
 
 export const showAlertAction = (message, type) => ({
     type: SHOW_ALERT,
@@ -59,10 +66,42 @@ export const toggleSize = (message, type) => {
     });
 };
 
+/*
+export const paginateAction = (message, type) => {
+    return ({
+        type: PAGINATE,
+        payload: {message, type}
+    });
+};
+*/
+
 /*export const fetchData = (message, type) => ({
     type: REGISTER_USER,
     payload: { message, type }
 });*/
+
+export const paginate = (filter) => {
+    return (dispatch) => {
+        return fetch('http://localhost:3012/test/test',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filter)
+            })
+            .then(response => response.json())
+            .then(json => {
+                dispatch({type: UPDATE_ITEMS_FILTER, data: filter});
+                dispatch({type: UPDATE_ITEMS_FILTERED, itemsFiltered: json});
+            })
+            .catch
+            (err => dispatch(
+                {type: "ERROR", msg: "Unable to fetch data"})) //TODO: add disptatcher
+    }
+
+}
 
 // asynchronous action creator
 export const fetchData = (data) => {
@@ -110,6 +149,34 @@ export const login = (data) => {
                 {type: "ERROR", msg: "Unable to fetch data"})) //TODO: add disptatcher
     }
 
+}
+
+export const getProducts = (filter) => {
+    //let params = this.state.itemsFilter;
+
+    return (dispatch) => {
+        let query = Object.keys(filter)
+            .filter(k => filter[k] !== null)
+            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(filter[k]))
+            .join('&');
+
+        return fetch('http://localhost:3012/test/test?' + query,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(json => {
+                dispatch({type: UPDATE_ITEMS_COLLECTION, filter: filter, items: json.items, total: json.total, pages: json.pages, itemsFiltered: json})
+            })
+            .catch
+            (err => {
+                debugger;
+            }) //TODO: add disptatcher
+    }
 }
 
 

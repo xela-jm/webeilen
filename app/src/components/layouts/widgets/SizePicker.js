@@ -19,12 +19,11 @@ class SizePicker extends React.Component {
 
 
     render() {
-        debugger;
         return (
             <div className="swatch clearfix" data-option-index={0}>
                 <div className="header">Size</div>
                 <div data-value="M" className="swatch-element plain m available">
-                    <input id="swatch-0-m" type="checkbox" name="M" checked={this.props.itemsFilter.size.M} onChange={this.handleSizeInputChange} defaultValue="M" defaultChecked />
+                    <input id="swatch-0-m" type="checkbox" name="M" checked={this.props.itemsFilter.size.M} onChange={this.handleSizeInputChange} defaultValue="M" />
                     <label htmlFor="swatch-0-m">
                         M
                         <img className="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />

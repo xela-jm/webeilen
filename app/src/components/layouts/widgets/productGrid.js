@@ -1,77 +1,20 @@
 import React from 'react';
 import ItemsRows from "./ItemsRow";
 import {HIDE_LOGIN, SET_USER_DATA} from "../../../actions/types";
+import connect from "react-redux/es/connect/connect";
+import {toggleColor} from "../../../actions/action";
+import clone from "clone";
 
-export default class ProductsGrid extends React.Component {
+class ProductsGrid extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state =
-            {
-                itemsFilter: {
-                    offset: 0,
-                    color: 1,
-                    name: null,
-                    price: null,
-                    size: null,
-                    description: null
-                },
-                itemsFiltered: {
-                    total: 0,
-                    offset: 24,
-                    items: []
-                }
-            }
     }
-
-    componentDidMount() {
-        this.getProducts();
-    }
-    //get products data
-    getProducts() {
-        let params = this.state.itemsFilter;
-
-        let query = Object.keys(params)
-            .filter(k => params[k] !== null)
-            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-            .join('&');
-
-        return fetch('http://localhost:3012/test/test?' + query,
-            {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(json => {
-                let newState = this.state;
-                newState.itemsFiltered = {
-                    items: json,
-                    total: 100,
-                    offset: 0
-                }
-
-                this.setState(newState);
-                /*this.state.itemsFiltered.items = json;
-                this.state.itemsFiltered.total = 100;
-                this.state.itemsFiltered.offset= 0;*/
-
-            })
-            .catch
-            (err => {debugger;}) //TODO: add disptatcher
-    }
-
-    setProps() {
-    }
-
 
     render() {
       let info = {
           total: 100,
-          items: this.state.itemsFiltered.items,
+          items: this.props.itemsFiltered.items,
           offset: 24,
           itemsOnPage: 12
       };
@@ -93,7 +36,7 @@ export default class ProductsGrid extends React.Component {
        for (let j = 0; j < numberOfRows; j++) {
            // note: we add a key prop here to allow react to uniquely identify each
            // element in this array. see: https://reactjs.org/docs/lists-and-keys.html
-           rows.push(<ItemsRows items={this.state.itemsFiltered.items} offset={j*4}></ItemsRows>);
+           rows.push(<ItemsRows items={this.props.itemsFiltered.items} offset={j*4}></ItemsRows>);
        }
        const html =
            <div>
@@ -107,3 +50,12 @@ export default class ProductsGrid extends React.Component {
       );
    }
 }
+
+const mapStateToProps = ({appSettings}) => {
+    const {itemsFiltered, itemsFilter} = appSettings;
+    return {itemsFiltered, itemsFilter};
+};
+
+export default connect(mapStateToProps, {
+    toggleColor: toggleColor
+})(ProductsGrid);

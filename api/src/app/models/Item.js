@@ -1,4 +1,5 @@
 'use strict';
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, DataTypes) => {
     var Image1 = sequelize.define('Image', {
             id: {
@@ -32,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             timestamps: false
         })
 
+    sequelizePaginate.paginate(Image1)
 
     return Image1;
 }

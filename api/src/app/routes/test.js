@@ -4,7 +4,7 @@ const controller = require('../controllers/items')
 
 console.log("Test controller registered");
 
-router.get('/test', function (req, res) {
+router.post('/test', function (req, res) {
     controller.getItems(req, res).then(result => {
         res.send(result);
     }).catch(e => {

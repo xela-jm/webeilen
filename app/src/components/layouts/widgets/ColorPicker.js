@@ -1,12 +1,15 @@
 import React from 'react';
 
 import connect from "react-redux/es/connect/connect";
-import {toggleColor} from "../../../actions/action";
+import {paginate, toggleColor} from "../../../actions/action";
 
 class ColorPicker extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {};
+        this.state.itemsFilter = this.props.itemsFilter;
     }
 
     handleColorInputChange = (event) =>  {
@@ -14,7 +17,10 @@ class ColorPicker extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        this.props.toggleColor(name);
+        this.state.itemsFilter.color[name] = true;
+
+        this.props.paginate(this.state.itemsFilter);
+        //this.props.toggleColor(name);
     }
 
 
@@ -25,7 +31,7 @@ class ColorPicker extends React.Component {
                 <div className="header">Color</div>
                 <div data-value="Blue" className="swatch-element color blue-swatch available">
                     <div className="tooltip">Blue</div>
-                    <input quickbeam="color" id="swatch-1-blue" type="checkbox" checked={this.props.itemsFilter.color.blue_opt} onChange={this.handleColorInputChange} name="blue_opt" defaultValue="Blue" defaultChecked />
+                    <input quickbeam="color" id="swatch-1-blue" type="checkbox" checked={this.props.itemsFilter.color.blue_opt} onChange={this.handleColorInputChange} name="blue_opt" defaultValue="Blue"/>
                     <label htmlFor="swatch-1-blue" style={{borderColor: 'blue'}}>
                         <img className="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
                         <span style={{backgroundColor: 'blue'}} />
@@ -58,5 +64,6 @@ const mapStateToProps = ({appSettings}) => {
 };
 
 export default connect(mapStateToProps, {
-    toggleColor: toggleColor
+    toggleColor: toggleColor,
+    paginate: paginate
 })(ColorPicker);

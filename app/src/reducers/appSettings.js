@@ -1,7 +1,7 @@
 import {
     HIDE_ALERT,
     HIDE_LOGIN,
-    LOG_OUT,
+    LOG_OUT, PAGINATE,
     REGISTER_USER,
     SET_USER_DATA,
     SHOW_ALERT,
@@ -9,7 +9,7 @@ import {
     TOGGLE_ALERT,
     TOGGLE_COLOR,
     TOGGLE_LOGIN,
-    TOGGLE_SIZE
+    TOGGLE_SIZE, UPDATE_ITEMS_COLLECTION, UPDATE_ITEMS_FILTER, UPDATE_ITEMS_FILTERED
 } from "../actions/types";
 
 
@@ -29,11 +29,12 @@ const INITIAL_STATE = {
             L: false,
             XL: false,
             XXL: false
-        }
+        },
+        page: 0
     },
     itemsFiltered: {
-        total: 100,
-        offset: 24,
+        total: 0,
+        pages: 0,
         items: []
     }
 };
@@ -95,6 +96,50 @@ export default (state = INITIAL_STATE, action) => {
             sessionStorage.removeItem("userDetails")
             return {...state, userDetails: null}
 
+/*        case PAGINATE:
+            return {
+                ...state,
+                itemsFilter: {
+                    ...state.itemsFilter,
+                    size:
+                        {
+                            ...state.itemsFilter.size,
+                            [action.payload.message]: !state.itemsFilter.size[action.payload.message]
+                        }
+                }
+            }*/
+
+        case UPDATE_ITEMS_FILTER:
+            debugger;
+            return {
+                ...state,
+                itemsFilter: {
+                    ...state.itemsFilter,
+                    size:
+                        {
+                            ...state.itemsFilter.color,
+                            blue_opt: true
+                        }
+                }
+            }
+           /* return {
+                ...state,
+                itemsFilter: action.data
+            }*/
+
+        case UPDATE_ITEMS_FILTERED:
+            debugger;
+            return {
+                ...state,
+                itemsFiltered: action.itemsFiltered
+            }
+
+        case UPDATE_ITEMS_COLLECTION:
+            return {
+                ...state,
+                itemsFilter: action.filter,
+                itemsFiltered: action.itemsFiltered
+            }
 
         default:
             return {...state};

@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -14,6 +15,7 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
+                Hi
                 <Route path="/" component={App}/>
             </Switch>
         </BrowserRouter>
