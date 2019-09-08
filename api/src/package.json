@@ -18,7 +18,9 @@
     "jsonwebtoken": "^8.5.1",
     "bcrypt-nodejs": "0.0.3",
     "cors": "^2.8.5",
-    "sequelize-paginate": "1.1.6"
+    "sequelize-paginate": "1.1.6",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-ui-express": "^4.0.2"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
