@@ -18,11 +18,11 @@ class HomePage extends Component {
     }
 
     handleClick = (offset) => {
+        debugger;
         console.log("offset=" + offset)
-
         let filter = clone(this.props.itemsFilter);
+        filter.offset = offset;
         this.props.paginate(filter);
-      //  alert('dd0');
     }
 
     render() {
@@ -42,9 +42,10 @@ class HomePage extends Component {
                                 <MuiThemeProvider theme={theme}>
                                     <CssBaseline />
                                     <Pagination
-                                        limit={10}
-                                        offset={this.state.offset}
-                                        total={100}
+                                        className={this.props.itemsFiltered.total <= 12 ? 'invisible' : ''}
+                                        limit={12}
+                                        offset={this.props.itemsFiltered.offset}
+                                        total={this.props.itemsFiltered.total}
                                         onClick={(e, offset) => this.handleClick(offset)}
                                     />
                                 </MuiThemeProvider>

@@ -2,30 +2,24 @@ import React from 'react';
 
 import connect from "react-redux/es/connect/connect";
 import {paginate, toggleColor} from "../../../actions/action";
+import clone from "clone";
 
 class ColorPicker extends React.Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {};
-        this.state.itemsFilter = this.props.itemsFilter;
     }
 
     handleColorInputChange = (event) =>  {
+        let itemsFilter = clone(this.props.itemsFilter);
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.state.itemsFilter.color[name] = true;
-
-        this.props.paginate(this.state.itemsFilter);
-        //this.props.toggleColor(name);
+        itemsFilter.color[name] = value
+        this.props.paginate(itemsFilter);
     }
 
-
     render() {
-        debugger;
         return (
             <div className="swatch clearfix" data-option-index={1}>
                 <div className="header">Color</div>

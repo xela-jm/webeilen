@@ -16,6 +16,8 @@ import {
     UPDATE_ITEMS_FILTERED
 } from "./types";
 //import {applyMiddleware as dispatch} from "redux";
+import { store } from "../index";
+import clone from "clone";
 
 export const showAlertAction = (message, type) => ({
     type: SHOW_ALERT,
@@ -81,7 +83,9 @@ export const paginateAction = (message, type) => {
 });*/
 
 export const paginate = (filter) => {
-    return (dispatch) => {
+    return (dispatch, state) => {
+        const initialFilterState = clone(state().appSettings.itemsFilter);
+        dispatch({type: UPDATE_ITEMS_FILTER, data: filter});
         return fetch('http://localhost:3012/test/test',
             {
                 method: 'POST',
@@ -89,7 +93,7 @@ export const paginate = (filter) => {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(filter)
+                body: JSON.stringify(mapFilterToApiCall(filter))
             })
             .then(response => response.json())
             .then(json => {
@@ -97,8 +101,12 @@ export const paginate = (filter) => {
                 dispatch({type: UPDATE_ITEMS_FILTERED, itemsFiltered: json});
             })
             .catch
-            (err => dispatch(
-                {type: "ERROR", msg: "Unable to fetch data"})) //TODO: add disptatcher
+            (err => {
+                dispatch({type: UPDATE_ITEMS_FILTER, data: initialFilterState});
+                dispatch(
+                    {type: "ERROR", msg: "Unable to fetch data"})
+
+            }) //TODO: add disptatcher
     }
 
 }
@@ -174,9 +182,44 @@ export const getProducts = (filter) => {
             })
             .catch
             (err => {
-                debugger;
-            }) //TODO: add disptatcher
+            }) //TODO: add disptatcher, rollback filter state
     }
+}
+
+const mapFilterToApiCall = (filter) => {
+    const colorsMapper = {
+        "blue_opt": 0,
+        "red_opt": 1,
+        "yellow_opt": 2,
+    }
+
+    const sizesMapper = {
+        "M": 0,
+        "L": 1,
+        "XL": 2,
+        "XXL": 3
+    }
+
+    let filterMapped = {
+        colors: [],
+        page: filter.page,
+        offset: filter.offset,
+        sizes: []
+    }
+
+    Object.keys(filter.color).map(function(key) {
+        if (filter.color[key]) {
+            filterMapped.colors.push(colorsMapper[key])
+        }
+    });
+
+    Object.keys(filter.size).map(function(key) {
+        if (filter.size[key]) {
+            filterMapped.sizes.push(sizesMapper[key])
+        }
+    });
+
+    return filterMapped;
 }
 
 

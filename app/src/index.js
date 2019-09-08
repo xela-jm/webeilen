@@ -15,7 +15,6 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                Hi
                 <Route path="/" component={App}/>
             </Switch>
         </BrowserRouter>

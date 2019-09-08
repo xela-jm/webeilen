@@ -2,49 +2,42 @@ const {matchedData} = require('express-validator')
 const {Image} = require('../models')
 const {Images} = require('../models')
 const {images} = require('../models')
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const paginate = 12
 
 exports.getItems = async (req, res) => {
-    //req = matchedData(req)
-/*    const id = req.query.id;
-    const color = req.query.color;
-    const name = req.query.name;
-    const price = req.query.price;
-    const size = req.query.size;
-    let page = req.query.page;*/
-
-    const id = 0
-    const color = 0;
-    const name = '';
-    const price = 0;
-    const size = 0;
+    //req = matchedData(req) //TODO: use matchedData
+    let colors = null;
+    let sizes = null;
     let page = 1;
+    let offset = 0;
+    if (req.body.colors && req.body.colors.length > 0) {
+       colors = req.body.colors;
+    }
+    if (req.body.sizes && req.body.sizes.length > 0) {
+        sizes = req.body.sizes;
+    }
 
-    const description = req.query.description;
+    if (req.body.offset) {
+        offset = req.body.offset
+        page = req.body.offset/12 + 1;
+    }
 
-    let search = {};
-    /*if (id != null) search.id = id;
-    if (color != null) search.color = color;
-    if (name != null) search.name = name;
-    if (price != null) search.price = price;
-    if (size != null) search.size = size;
-    if (description != null) search.description = description;*/
-    page = (page != null) ? 1 : page;
-
-    const limit = 12;
+    let search = {}
+    if (colors != null) search.color = {[Op.in]: colors};
+    if (sizes != null) search.size = {[Op.in]: sizes};
 
     const options = {
-        //attributes: ['id', 'name'],
-        page: page, // Default 1
-        paginate: 12, // Default 25
-        //order: [['name', 'DESC']],
-        //where: { name: { [Op.like]: `%elliot%` } }
+        page: page,
+        paginate: paginate,
         where: search
     }
+
     const {docs, pages, total} = await Image.paginate(options)
+    if (offset > total) {
+        offset = 0;
+    }
 
-    /*return Image.findAll({
-        where: search
-    })*/
-
-    return {'items': docs, 'pages': pages, 'total': total}
+    return {'items': docs, 'pages': pages, 'total': total, 'offset': offset}
 }

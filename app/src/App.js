@@ -15,11 +15,6 @@ class App extends React.Component {
                     <Route exact path="/" component={AsyncHomePage}/>
                     <Route exact path="/register" component={AsyncSignUp}/>
                 </Switch>
-                {/*<Header/>
-                <Switch>
-                    <Route exact path="/" component={AsyncHomePage}/>
-                    <Route exact path="/register" component={AsyncSignUp}/>
-                </Switch>*/}
             </div>
         )
     }

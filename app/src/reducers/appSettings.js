@@ -34,7 +34,8 @@ const INITIAL_STATE = {
     },
     itemsFiltered: {
         total: 0,
-        pages: 0,
+        //pages: 0,
+        offset: 0,
         items: []
     }
 };
@@ -110,25 +111,12 @@ export default (state = INITIAL_STATE, action) => {
             }*/
 
         case UPDATE_ITEMS_FILTER:
-            debugger;
             return {
                 ...state,
-                itemsFilter: {
-                    ...state.itemsFilter,
-                    size:
-                        {
-                            ...state.itemsFilter.color,
-                            blue_opt: true
-                        }
-                }
-            }
-           /* return {
-                ...state,
                 itemsFilter: action.data
-            }*/
+            }
 
         case UPDATE_ITEMS_FILTERED:
-            debugger;
             return {
                 ...state,
                 itemsFiltered: action.itemsFiltered

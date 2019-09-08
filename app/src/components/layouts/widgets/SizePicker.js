@@ -1,7 +1,9 @@
 import React from 'react';
 
 import connect from "react-redux/es/connect/connect";
-import {toggleColor, toggleSize} from "../../../actions/action";
+import {paginate, toggleColor, toggleSize} from "../../../actions/action";
+import clone from "clone";
+
 
 class SizePicker extends React.Component {
 
@@ -10,13 +12,13 @@ class SizePicker extends React.Component {
     }
 
     handleSizeInputChange = (event) =>  {
+        let itemsFilter = clone(this.props.itemsFilter);
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.props.toggleSize(name);
+        itemsFilter.size[name] = value
+        this.props.paginate(itemsFilter);
     }
-
 
     render() {
         return (
@@ -61,5 +63,6 @@ const mapStateToProps = ({appSettings}) => {
 };
 
 export default connect(mapStateToProps, {
-    toggleSize: toggleSize
+    toggleSize: toggleSize,
+    paginate: paginate
 })(SizePicker);
